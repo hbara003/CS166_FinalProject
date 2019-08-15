@@ -306,15 +306,46 @@ public class MechanicShop{
 	
 	public static void AddCustomer(MechanicShop esql)
         {//1
+		int newID;
+		String fname;
+		String lname;
+		String phone;
+		String address;
 	    try{
-		String query = "SELECT * FROM Catalog WHERE cost < ";
+		// create new user ID
+		String ID_query = "SELECT * FROM Customer";
+		newID = esql.executeQuery(ID_query);
+		System.out.println("new ID is: "+ newID);
 
-		System.out.print("\tEnter cost: $");
-		String input = in.readLine();
-		query += input;
+		// get customer information
+		System.out.println("\tEnter first name: ");
+		fname = in.readLine();
 
-		int rowCount = esql.executeQuery (query);
-		System.out.println ("total row(s): " + rowCount);
+		System.out.println("\tEnter last name: ");
+		lname = in.readLine();
+
+		System.out.println("\tEnter phone number: ");
+		phone = in.readLine();
+
+		System.out.println("\tEnter address: ");
+		address = in.readLine();
+
+		// concatenate query string and run
+		String query = "INSERT INTO Customer VALUES(";
+		query += Integer.toString(newID);
+		query += ", ";
+		query += fname; 
+		query += ", ";
+		query += lname;
+		query += ", ";
+		query += phone;
+		query += ", ";
+		query += address;
+		query += ")";
+
+		esql.executeUpdate(query);
+		//int rowCount = esql.executeQuery (query);
+		//System.out.println ("total row(s): " + rowCount);
         
 	    }catch(Exception e)
 	    {
