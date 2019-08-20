@@ -8,4 +8,4 @@
 4. compile the main code
 > . ./java/compile.sh
 5. run the main code
-> . ./java/run.sh $LOGNAME_DB 9998 $LOGNAME
+> . ./java/run.sh $LOGNAME'_DB' 9998 $LOGNAME
