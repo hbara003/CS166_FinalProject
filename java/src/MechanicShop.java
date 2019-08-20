@@ -306,16 +306,17 @@ public class MechanicShop{
 	
 	public static void AddCustomer(MechanicShop esql)
         {//1
-		int newID;
-		String fname;
-		String lname;
-		String phone;
-		String address;
+            int newID;
+            String fname;
+            String lname;
+            String phone;
+            String address;
 	    try{
 		// create new user ID
-		String ID_query = "SELECT * FROM Customer";
-		newID = esql.executeQuery(ID_query);
-		System.out.println("new ID is: "+ newID);
+		String ID_query = "SELECT MAX(id) FROM Customer";
+		List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
+		newID = Integer.parseInt(rs.get(0).get(0)) + 1;
+		System.out.println(newID);
 
 		// get customer information
 		System.out.println("\tEnter first name: ");
@@ -331,38 +332,152 @@ public class MechanicShop{
 		address = in.readLine();
 
 		// concatenate query string and run
-		String query = "INSERT INTO Customer VALUES(";
-		query += Integer.toString(newID);
-		query += ", ";
-		query += fname; 
-		query += ", ";
-		query += lname;
-		query += ", ";
-		query += phone;
-		query += ", ";
-		query += address;
-		query += ")";
+		String query = "INSERT INTO Customer VALUES ";
+		query += "( " + Integer.toString(newID) + ", ";
+		query += "\'" +  fname + "\', ";
+		query += "\'" +  lname + "\', ";
+		query += "\'" +  phone + "\', ";
+		query += "\'" +  address + "\')";
 
+		// execute the query and update the DB
 		esql.executeUpdate(query);
-		//int rowCount = esql.executeQuery (query);
-		//System.out.println ("total row(s): " + rowCount);
-        
+       
 	    }catch(Exception e)
 	    {
 		System.err.println (e.getMessage ());
 	    }		
 	}
 	
+	//FIXME: change this function from add customer to add Mechanic
 	public static void AddMechanic(MechanicShop esql){//2
-		
+            int newID;
+            String fname;
+            String lname;
+            String phone;
+            String address;
+	    try{
+		// create new user ID
+		String ID_query = "SELECT MAX(id) FROM Customer";
+		List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
+		newID = Integer.parseInt(rs.get(0).get(0)) + 1;
+		System.out.println(newID);
+
+		// get customer information
+		System.out.println("\tEnter first name: ");
+		fname = in.readLine();
+
+		System.out.println("\tEnter last name: ");
+		lname = in.readLine();
+
+		System.out.println("\tEnter phone number: ");
+		phone = in.readLine();
+
+		System.out.println("\tEnter address: ");
+		address = in.readLine();
+
+		// concatenate query string and run
+		String query = "INSERT INTO Customer VALUES ";
+		query += "( " + Integer.toString(newID) + ", ";
+		query += "\'" +  fname + "\', ";
+		query += "\'" +  lname + "\', ";
+		query += "\'" +  phone + "\', ";
+		query += "\'" +  address + "\')";
+
+		// execute the query and update the DB
+		esql.executeUpdate(query);
+       
+	    }catch(Exception e)
+	    {
+		System.err.println (e.getMessage ());
+	    }		
 	}
 	
+	//FIXME: change this function from add customer to add car
 	public static void AddCar(MechanicShop esql){//3
-		
+            int newID;
+            String fname;
+            String lname;
+            String phone;
+            String address;
+	    try{
+		// create new user ID
+		String ID_query = "SELECT MAX(id) FROM Customer";
+		List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
+		newID = Integer.parseInt(rs.get(0).get(0)) + 1;
+		System.out.println(newID);
+
+		// get customer information
+		System.out.println("\tEnter first name: ");
+		fname = in.readLine();
+
+		System.out.println("\tEnter last name: ");
+		lname = in.readLine();
+
+		System.out.println("\tEnter phone number: ");
+		phone = in.readLine();
+
+		System.out.println("\tEnter address: ");
+		address = in.readLine();
+
+		// concatenate query string and run
+		String query = "INSERT INTO Customer VALUES ";
+		query += "( " + Integer.toString(newID) + ", ";
+		query += "\'" +  fname + "\', ";
+		query += "\'" +  lname + "\', ";
+		query += "\'" +  phone + "\', ";
+		query += "\'" +  address + "\')";
+
+		// execute the query and update the DB
+		esql.executeUpdate(query);
+       
+	    }catch(Exception e)
+	    {
+		System.err.println (e.getMessage ());
+	    }		
 	}
 	
+	//FIXME: change this function from add customer to add SR
 	public static void InsertServiceRequest(MechanicShop esql){//4
-		
+            int newID;
+            String fname;
+            String lname;
+            String phone;
+            String address;
+	    try{
+		// create new user ID
+		String ID_query = "SELECT MAX(id) FROM Customer";
+		List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
+		newID = Integer.parseInt(rs.get(0).get(0)) + 1;
+		System.out.println(newID);
+
+		// get customer information
+		System.out.println("\tEnter first name: ");
+		fname = in.readLine();
+
+		System.out.println("\tEnter last name: ");
+		lname = in.readLine();
+
+		System.out.println("\tEnter phone number: ");
+		phone = in.readLine();
+
+		System.out.println("\tEnter address: ");
+		address = in.readLine();
+
+		// concatenate query string and run
+		String query = "INSERT INTO Customer VALUES ";
+		query += "( " + Integer.toString(newID) + ", ";
+		query += "\'" +  fname + "\', ";
+		query += "\'" +  lname + "\', ";
+		query += "\'" +  phone + "\', ";
+		query += "\'" +  address + "\')";
+
+		// execute the query and update the DB
+		esql.executeUpdate(query);
+       
+	    }catch(Exception e)
+	    {
+		System.err.println (e.getMessage ());
+	    }		
 	}
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
