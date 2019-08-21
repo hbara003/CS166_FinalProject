@@ -303,8 +303,8 @@ public class MechanicShop{
 		}while (true);
 		return input;
 	}//end readChoice
-	
-	public static void AddCustomer(MechanicShop esql) {//1
+
+    public static void AddCustomer(MechanicShop esql) {//1
         // Customer attributes
         int newID;      // integer
         String fname;   // char(32)
@@ -352,13 +352,13 @@ public class MechanicShop{
 	    }		
 	}
 	
-	public static void AddMechanic(MechanicShop esql) {//2
+    public static void AddMechanic(MechanicShop esql) {//2
         // Mechanic attributes
         int newID;    // integer
         String fname; // char(32)
         String lname; // char(32)
         String exp;   // integer, 0 <= years < 100
-	    try{
+        try{
             // create new mechanic ID
             String ID_query = "SELECT MAX(id) FROM Mechanic";
             List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
@@ -433,38 +433,44 @@ public class MechanicShop{
 	}
 	
 	public static void InsertServiceRequest(MechanicShop esql){//4
-        int newID;
-        String fname;
-        String lname;
-        String phone;
-        String address;
-	    try{
+        int newRID;      // integer
+        int cust_id;     // integer, from Customer(id)
+        String vin;      // varchar(16), from Car(vin)
+        String date;     // date
+        String odo;      // integer, val > 0
+        String complain; // text
+        try{
             // create new user ID
-            String ID_query = "SELECT MAX(id) FROM Customer";
+            String ID_query = "SELECT MAX(rid) FROM Service_Request";
             List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
             newID = Integer.parseInt(rs.get(0).get(0)) + 1;
             System.out.println(newID);
 
             // get customer information
-            System.out.println("\tEnter first name: ");
-            fname = in.readLine();
+            System.out.println("\tEnter customer ID: ");
+            cust_id = in.readLine();
 
-            System.out.println("\tEnter last name: ");
-            lname = in.readLine();
+            System.out.println("\tEnter car VIN: ");
+            vin = in.readLine();
 
-            System.out.println("\tEnter phone number: ");
-            phone = in.readLine();
+            System.out.println("\tEnter date: ");
+            //FIXME: format date (use get date function?)
+            date = in.readLine();
 
-            System.out.println("\tEnter address: ");
-            address = in.readLine();
+            System.out.println("\tEnter milage: ");
+            odo = in.readLine();
+
+            System.out.println("\tEnter complaint: ")
+            complain = in.readLine();
 
             // concatenate query string and run
             String query = "INSERT INTO Customer VALUES ";
             query += "( " + Integer.toString(newID) + ", ";
-            query += "\'" +  fname + "\', ";
-            query += "\'" +  lname + "\', ";
-            query += "\'" +  phone + "\', ";
-            query += "\'" +  address + "\')";
+            query += cust_id + ", ";
+            query += "\'" + vin + "\', ";
+            query += "\'" + date + "\', ";
+            query += "\'" + odo + "\')";
+            query += "\'" + complain + "\')";
 
             // execute the query and update the DB
             esql.executeUpdate(query);
