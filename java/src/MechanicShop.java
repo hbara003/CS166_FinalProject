@@ -304,7 +304,6 @@ public class MechanicShop{
 		return input;
 	}//end readChoice
 	
-    // FIXME: assert constraints on attributes
 	public static void AddCustomer(MechanicShop esql) {//1
         // Customer attributes
         int newID;      // integer
@@ -353,7 +352,6 @@ public class MechanicShop{
 	    }		
 	}
 	
-    // FIXME: assert constraints on attributes
 	public static void AddMechanic(MechanicShop esql) {//2
         // Mechanic attributes
         int newID;    // integer
@@ -396,7 +394,6 @@ public class MechanicShop{
 	    }		
 	}
 	
-    // FIXME: assert constraints on attributes
 	public static void AddCar(MechanicShop esql){//3
         String vin;   // varchar(16)
         String make;  // varchar(32)
@@ -435,7 +432,6 @@ public class MechanicShop{
 	    }		
 	}
 	
-	//FIXME: change this function from add customer to add SR
 	public static void InsertServiceRequest(MechanicShop esql){//4
         int newID;
         String fname;
