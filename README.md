@@ -1,6 +1,7 @@
 # CS166 Final Project
 ## How to Run
-1. download on Linux
+1. download on Linux with postgreSQL
+> git clone https://github.com/hbara003/CS166_FinalProject.git
 2. start the DataBase 
 > . ./postgresql/startPostgreSQL.sh
 3. Create the DataBase 
