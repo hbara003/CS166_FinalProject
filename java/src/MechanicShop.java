@@ -307,14 +307,14 @@ public class MechanicShop{
     // FIXME: assert constraints on attributes
 	public static void AddCustomer(MechanicShop esql) {//1
         // Customer attributes
-        int newID;
-        String fname;
-        String lname;
-        String phone;
-        String address;
+        int newID;      // integer
+        String fname;   // char(32)
+        String lname;   // char(32)
+        String phone;   // char(13)
+        String address; // char(256)
 
 	    try{
-            // create new user ID
+            // create new customer ID
             String ID_query = "SELECT MAX(id) FROM Customer";
             List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
             newID = Integer.parseInt(rs.get(0).get(0)) + 1;
@@ -342,31 +342,31 @@ public class MechanicShop{
 
             // execute the query and update the DB
             esql.executeUpdate(query);
-            // test update
+            // test update (sanity check)
             String test_query = "SELECT * FROM Customer WHERE id = ";
             test_query += Integer.toString(newID);
             esql.executeQueryAndPrintResult(test_query);
            
 	    }catch(Exception e)
 	    {
-            System.err.println (e.getMessage ());
+            System.err.println(e.getMessage ());
 	    }		
 	}
 	
     // FIXME: assert constraints on attributes
 	public static void AddMechanic(MechanicShop esql) {//2
         // Mechanic attributes
-        int newID;
-        String fname;
-        String lname;
-        String exp; // 0 <= years < 100
+        int newID;    // integer
+        String fname; // char(32)
+        String lname; // char(32)
+        String exp;   // integer, 0 <= years < 100
 	    try{
-            // create new user ID
+            // create new mechanic ID
             String ID_query = "SELECT MAX(id) FROM Mechanic";
             List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
             newID = Integer.parseInt(rs.get(0).get(0)) + 1;
 
-            // get customer information
+            // get mechanic information
             System.out.println("\tEnter first name: ");
             fname = in.readLine();
 
@@ -385,19 +385,58 @@ public class MechanicShop{
 
             // execute the query and update the DB
             esql.executeUpdate(query);
-            // test update
+            // test update (sanity check)
             String test_query = "SELECT * FROM Mechanic WHERE id = ";
             test_query += Integer.toString(newID);
             esql.executeQueryAndPrintResult(test_query);
            
 	    }catch(Exception e)
 	    {
+            System.err.println(e.getMessage ());
+	    }		
+	}
+	
+    // FIXME: assert constraints on attributes
+	public static void AddCar(MechanicShop esql){//3
+        String vin;   // varchar(16)
+        String make;  // varchar(32)
+        String model; // varchar(32)
+        String year;  // integer, year >= 1970
+	    try{
+            // get car information
+            System.out.println("\tEnter VIN: ");
+            vin = in.readLine();
+
+            System.out.println("\tEnter make: ");
+            make = in.readLine();
+
+            System.out.println("\tEnter model: ");
+            model = in.readLine();
+
+            System.out.println("\tEnter year: ");
+            year = in.readLine();
+
+            // concatenate query string and run
+            String query = "INSERT INTO Car VALUES ";
+            query += "(\'" + vin   + "\', ";
+            query += "\'"  + make  + "\', ";
+            query += "\'"  + model + "\', ";
+            query += year  + ")";
+
+            // execute the query and update the DB
+            esql.executeUpdate(query);
+            // test update (sanity check)
+            String test_query = "SELECT * FROM Car WHERE vin = \'" +vin+ "\'";
+            esql.executeQueryAndPrintResult(test_query);
+       
+	    }catch(Exception e)
+	    {
             System.err.println (e.getMessage ());
 	    }		
 	}
 	
-	//FIXME: change this function from add customer to add car
-	public static void AddCar(MechanicShop esql){//3
+	//FIXME: change this function from add customer to add SR
+	public static void InsertServiceRequest(MechanicShop esql){//4
         int newID;
         String fname;
         String lname;
@@ -433,58 +472,10 @@ public class MechanicShop{
 
             // execute the query and update the DB
             esql.executeUpdate(query);
-            // test update
-            String test_query = "SELECT * FROM Mechanic WHERE id = ";
-            test_query += Integer.toString(newID);
-            esql.executeQueryAndPrintResult(test_query);
        
 	    }catch(Exception e)
 	    {
-		System.err.println (e.getMessage ());
-	    }		
-	}
-	
-	//FIXME: change this function from add customer to add SR
-	public static void InsertServiceRequest(MechanicShop esql){//4
-            int newID;
-            String fname;
-            String lname;
-            String phone;
-            String address;
-	    try{
-		// create new user ID
-		String ID_query = "SELECT MAX(id) FROM Customer";
-		List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
-		newID = Integer.parseInt(rs.get(0).get(0)) + 1;
-		System.out.println(newID);
-
-		// get customer information
-		System.out.println("\tEnter first name: ");
-		fname = in.readLine();
-
-		System.out.println("\tEnter last name: ");
-		lname = in.readLine();
-
-		System.out.println("\tEnter phone number: ");
-		phone = in.readLine();
-
-		System.out.println("\tEnter address: ");
-		address = in.readLine();
-
-		// concatenate query string and run
-		String query = "INSERT INTO Customer VALUES ";
-		query += "( " + Integer.toString(newID) + ", ";
-		query += "\'" +  fname + "\', ";
-		query += "\'" +  lname + "\', ";
-		query += "\'" +  phone + "\', ";
-		query += "\'" +  address + "\')";
-
-		// execute the query and update the DB
-		esql.executeUpdate(query);
-       
-	    }catch(Exception e)
-	    {
-		System.err.println (e.getMessage ());
+            System.err.println (e.getMessage ());
 	    }		
 	}
 	
