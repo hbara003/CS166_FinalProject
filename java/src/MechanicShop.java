@@ -24,6 +24,11 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.util.regex.*; 
+import java.util.Date; 
+import java.util.*; 
+import java.text.SimpleDateFormat; 
+
 /**
  * This class defines a simple embedded SQL utility class that is designed to
  * work with PostgreSQL JDBC drivers.
@@ -462,7 +467,6 @@ public class MechanicShop{
 
             System.out.println("\tEnter complaint: ")
             complain = in.readLine();
-
             // concatenate query string and run
             String query = "INSERT INTO Customer VALUES ";
             query += "( " + Integer.toString(newID) + ", ";
@@ -482,7 +486,52 @@ public class MechanicShop{
 	}
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
+	int mid = 0;	//mechanic ID reference 
+	int rid = 0; 	//service request ID reference
+	int wid = 0;	//new ID for the closed service request (wid + 1)
+	int bill; 	//amount billed for this service request 
+	String comment; //comment for the closed service request
+	String date; 
+	try {
+		//get current date 
+		date = new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());  
+
+		//get mechanic ID
+		System.out.println("\tEnter mechanic ID: "); 
+		mid = in.readLine(); 
+
+		//get service request ID
+		System.out.println("\tEnter service request ID: "); 
+		rid = in.readLine();
+		//check whether service request actually exists before closing
+		String check_query = String.format("SELECT * FROM Service_Request WHERE %d = rid", rid); 
+		rs = esql.executeQueryAndReturnResult(check_query); 
+		if (rs.size() == 0) {
+			System.out.println("Service Request does not exist with that ID"); 
+			return; 
+		} 
+		//check whether the service request has been closed already
+		check_query = String.format("SELECT * FROM Closed_Request WHERE %d = rid", rid); 
+		rs = esql.executeQueryAndReturnResult(check_query); 
+		if (rs.size() > 0) {
+			System.out.println("Service request with that ID has already been closed"); 
+			return; 
+		} 	
 		
+		//get bill amount for this service request
+		System.out.println("\tEnter bill amount: "); 
+		bill = in.readLine(); 
+
+		//create new closed request ID (WID) 
+		String WID_query = "SELECT MAX(wid) FROM Closed_Request"; 
+		List<List<String>> rs = esql.executeQueryAndReturnResult(WID_query); 
+		wid = Integer.parseInt(rs.get(0).get(0)) + 1; 
+		System.out.println(wid);
+
+		//create final query 
+		String query = "INSERT
+
+	}
 	}
 	
 	public static void ListCustomersWithBillLessThan100(MechanicShop esql){//6
