@@ -491,28 +491,36 @@ public class MechanicShop{
 	int wid = 0;	//new ID for the closed service request (wid + 1)
 	int bill; 	//amount billed for this service request 
 	String comment; //comment for the closed service request
-	String date; 
+	String date;
+	String ID_query; 
+	List<List<String>> rs;  
 	try {
 		//get current date 
 		date = new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());  
 
 		//get mechanic ID
 		System.out.println("\tEnter mechanic ID: "); 
-		mid = in.readLine(); 
-
+		mid = in.readLine();
+		ID_query = String.format("SELECT * FROM Mechanic WHERE %d = mid", mid); 
+		rs = esql.executeQueryAndReturnResult(ID_query); 
+		if (rs.size() == 0) {
+			System.out.println("Invalid mechanic ID"); 
+			return; 
+		}
+		 
 		//get service request ID
 		System.out.println("\tEnter service request ID: "); 
 		rid = in.readLine();
 		//check whether service request actually exists before closing
-		String check_query = String.format("SELECT * FROM Service_Request WHERE %d = rid", rid); 
-		rs = esql.executeQueryAndReturnResult(check_query); 
+		ID_query = String.format("SELECT * FROM Service_Request WHERE %d = rid", rid); 
+		rs = esql.executeQueryAndReturnResult(ID_query); 
 		if (rs.size() == 0) {
 			System.out.println("Service Request does not exist with that ID"); 
 			return; 
 		} 
 		//check whether the service request has been closed already
-		check_query = String.format("SELECT * FROM Closed_Request WHERE %d = rid", rid); 
-		rs = esql.executeQueryAndReturnResult(check_query); 
+		ID_query = String.format("SELECT * FROM Closed_Request WHERE %d = rid", rid); 
+		rs = esql.executeQueryAndReturnResult(ID_query); 
 		if (rs.size() > 0) {
 			System.out.println("Service request with that ID has already been closed"); 
 			return; 
@@ -522,15 +530,30 @@ public class MechanicShop{
 		System.out.println("\tEnter bill amount: "); 
 		bill = in.readLine(); 
 
+		//grab comment for closed service request
+		System.out.println("\tEnter any comments: "); 
+		comment = in.readLine(); 
+
 		//create new closed request ID (WID) 
-		String WID_query = "SELECT MAX(wid) FROM Closed_Request"; 
-		List<List<String>> rs = esql.executeQueryAndReturnResult(WID_query); 
+		ID_query = "SELECT MAX(wid) FROM Closed_Request"; 
+		rs = esql.executeQueryAndReturnResult(ID_query); 
 		wid = Integer.parseInt(rs.get(0).get(0)) + 1; 
 		System.out.println(wid);
 
 		//create final query 
-		String query = "INSERT
-
+		String query = "INSERT INTO Closed_Request VALUES ("; 
+		query += Integer.toString(wid) + ", "; 
+		query += Integer.toString(rid) + ", "; 
+		query += Integer.toString(mid) + ", "; 
+		query += "\'" + date + "\', "; 
+		query += "\'" + comment + "\', "; 
+		query += Integer.toString(bill) + ")"; 
+		
+		//execute query 
+		esql.executeUpdate(query); 
+	}
+	catch(Exception e) {
+		System.err.println(e.getMessage()); 
 	}
 	}
 	
