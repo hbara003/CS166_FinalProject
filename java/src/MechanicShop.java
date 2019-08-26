@@ -558,7 +558,25 @@ public class MechanicShop{
 	}
 	
 	public static void ListCustomersWithBillLessThan100(MechanicShop esql){//6
-		
+		String query = ""; 
+		String result = ""; 
+		String total_msg = ""; 
+		List<List<String>> rs; 
+		try {
+			query = String.format("SELECT Customer.fname, Customer.lname, Closed_Request.bill FROM Customer, Service_Request, Closed_Request WHERE Customer.id = Service_Request.customer_id AND Service_Request.rid = Closed_Request.rid AND bill < 100 ORDER BY fname;"); 
+			rs = esql.executeQueryAndReturnResult(query); 
+			for (int i = 0; i < rs.size(); ++i) {
+				result += "\nName: " + rs.get(i).get(0) + " " + rs.get(i).get(1) + "\n"; 
+				result += "Bill: " + rs.get(i).get(2) + "\n"; 	
+			}
+			total_msg = "Total customers with bill less than 100: " + rs.size(); 
+			System.out.println(total_msg); 
+			System.out.println(result); 
+		}
+		catch (java.sql.SQLException e) {
+			System.out.println(e.getMessage()); 
+		}
+
 	}
 	
 	public static void ListCustomersWithMoreThan20Cars(MechanicShop esql){//7
