@@ -448,12 +448,12 @@ public class MechanicShop{
             // create new user ID
             String ID_query = "SELECT MAX(rid) FROM Service_Request";
             List<List<String>> rs = esql.executeQueryAndReturnResult(ID_query);
-            newID = Integer.parseInt(rs.get(0).get(0)) + 1;
-            System.out.println(newID);
+            newRID = Integer.parseInt(rs.get(0).get(0)) + 1;
+            System.out.println(newRID);
 
             // get customer information
             System.out.println("\tEnter customer ID: ");
-            cust_id = in.readLine();
+            cust_id = Integer.parseInt(in.readLine());
 
             System.out.println("\tEnter car VIN: ");
             vin = in.readLine();
@@ -465,11 +465,11 @@ public class MechanicShop{
             System.out.println("\tEnter milage: ");
             odo = in.readLine();
 
-            System.out.println("\tEnter complaint: ")
+            System.out.println("\tEnter complaint: ");
             complain = in.readLine();
             // concatenate query string and run
             String query = "INSERT INTO Customer VALUES ";
-            query += "( " + Integer.toString(newID) + ", ";
+            query += "( " + Integer.toString(newRID) + ", ";
             query += cust_id + ", ";
             query += "\'" + vin + "\', ";
             query += "\'" + date + "\', ";
@@ -500,7 +500,7 @@ public class MechanicShop{
 
 		//get mechanic ID
 		System.out.println("\tEnter mechanic ID: "); 
-		mid = in.readLine();
+		mid = Integer.parseInt(in.readLine());
 		ID_query = String.format("SELECT * FROM Mechanic WHERE %d = mid", mid); 
 		rs = esql.executeQueryAndReturnResult(ID_query); 
 		if (rs.size() == 0) {
@@ -510,7 +510,7 @@ public class MechanicShop{
 		 
 		//get service request ID
 		System.out.println("\tEnter service request ID: "); 
-		rid = in.readLine();
+		rid = Integer.parseInt(in.readLine());
 		//check whether service request actually exists before closing
 		ID_query = String.format("SELECT * FROM Service_Request WHERE %d = rid", rid); 
 		rs = esql.executeQueryAndReturnResult(ID_query); 
@@ -528,7 +528,7 @@ public class MechanicShop{
 		
 		//get bill amount for this service request
 		System.out.println("\tEnter bill amount: "); 
-		bill = in.readLine(); 
+		bill = Integer.parseInt(in.readLine()); 
 
 		//grab comment for closed service request
 		System.out.println("\tEnter any comments: "); 
@@ -630,7 +630,7 @@ public class MechanicShop{
 	public static void ListCustomersInDescendingOrderOfTheirTotalBill(MechanicShop esql){//9
 		String query = ""; 
 		String result = ""; 
-		List<List<String> rs; 
+		List<List<String>> rs; 
 		try {
 			query = "SELECT Customer.fname, Customer.lname, SUM(Closed_Request.bill) FROM Customer, Service_Request, Closed_Request WHERE Customer.id = Service_Request.customer_id AND Service_Request.rid = Closed_Request.rid GROUP BY Customer.id ORDER BY SUM(bill) DESC;"; 
 			rs = esql.executeQueryAndReturnResult(query); 
