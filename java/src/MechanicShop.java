@@ -458,9 +458,7 @@ public class MechanicShop{
             System.out.println("\tEnter car VIN: ");
             vin = in.readLine();
 
-            System.out.println("\tEnter date: ");
-            //FIXME: format date (use get date function?)
-            date = in.readLine();
+            date = new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());  
 
             System.out.println("\tEnter milage: ");
             odo = in.readLine();
@@ -468,8 +466,8 @@ public class MechanicShop{
             System.out.println("\tEnter complaint: ");
             complain = in.readLine();
             // concatenate query string and run
-            String query = "INSERT INTO Customer VALUES ";
-            query += "( " + Integer.toString(newRID) + ", ";
+            String query = "INSERT INTO Customer VALUES (";
+            query += Integer.toString(newRID) + ", ";
             query += cust_id + ", ";
             query += "\'" + vin + "\', ";
             query += "\'" + date + "\', ";
@@ -501,7 +499,7 @@ public class MechanicShop{
 		//get mechanic ID
 		System.out.println("\tEnter mechanic ID: "); 
 		mid = Integer.parseInt(in.readLine());
-		ID_query = String.format("SELECT * FROM Mechanic WHERE %d = mid", mid); 
+		ID_query = String.format("SELECT * FROM Mechanic WHERE %d = id", mid); 
 		rs = esql.executeQueryAndReturnResult(ID_query); 
 		if (rs.size() == 0) {
 			System.out.println("Invalid mechanic ID"); 
