@@ -623,7 +623,34 @@ public class MechanicShop{
 	}
 	
 	public static void ListKCarsWithTheMostServices(MechanicShop esql){//9
-		//
+		int k;
+		String output = "";
+		String query;
+		List<List<String>> rs;  
+
+		try {
+			System.out.print("\tEnter k value (k > 0): "); 
+			k = Integer.parseInt(in.readLine());
+			
+
+			query = String.format("Select make, model, year, COUNT(*) FROM Car, Service_Request WHERE vin = car_vin GROUP BY vin ORDER BY COUNT(*) DESC LIMIT %d", k); 
+			rs = esql.executeQueryAndReturnResult(query); 
+
+			for (int i = 0; i < rs.size(); ++i) {
+				output += "Pos: "  + Integer.toString(i+1) + "\n";
+				output += "Make: "  + rs.get(i).get(0) + "\n";
+				output += "Model: " + rs.get(i).get(1) + "\n";
+				output += "Year: "  + rs.get(i).get(2) + "\n";
+				output += "Count: " + rs.get(i).get(3) + "\n";
+				output += "\n";
+			}
+
+			System.out.println(output);
+
+		}
+		catch(Exception e) {
+			System.err.println(e.getMessage()); 
+		}
 		
 	}
 	
