@@ -343,7 +343,7 @@ public class MechanicShop{
             System.out.println("\tEnter phone number: ");
             String temp = in.readLine();
 
-            while (temp.length() != 10 || !isNumeric(temp)) {
+            while (temp.length() != 10) {
                 System.out.println("Enter valid phone number");
                 temp = in.readLine();
             }
@@ -434,6 +434,9 @@ public class MechanicShop{
             System.out.println("\tEnter year: ");
             year = in.readLine();
 
+            //System.out.println("\tEnter customer ID: ");
+            //ownerID = in.readLine();
+            
             // concatenate query string and run
             String query = "INSERT INTO Car VALUES ";
             query += "(\'" + vin   + "\', ";
@@ -482,16 +485,19 @@ public class MechanicShop{
             System.out.println("\tEnter complaint: ");
             complain = in.readLine();
             // concatenate query string and run
-            String query = "INSERT INTO Customer VALUES (";
+            String query = "INSERT INTO Service_Request VALUES (";
             query += Integer.toString(newRID) + ", ";
-            query += cust_id + ", ";
+            query += Integer.toString(cust_id) + ", ";
             query += "\'" + vin + "\', ";
             query += "\'" + date + "\', ";
-            query += "\'" + odo + "\')";
+            query += odo + ", ";
             query += "\'" + complain + "\')";
 
             // execute the query and update the DB
             esql.executeUpdate(query);
+            // test update (sanity check)
+            String test_query = "SELECT * FROM Service_Request WHERE rid = " +Integer.toString(newRID);
+            esql.executeQueryAndPrintResult(test_query);
        
 	    }catch(Exception e)
 	    {
