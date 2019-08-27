@@ -563,7 +563,7 @@ public class MechanicShop{
 		String total_msg = ""; 
 		List<List<String>> rs; 
 		try {
-			query = String.format("SELECT Customer.fname, Customer.lname, Closed_Request.bill FROM Customer, Service_Request, Closed_Request WHERE Customer.id = Service_Request.customer_id AND Service_Request.rid = Closed_Request.rid AND bill < 100 ORDER BY fname;"); 
+			query = "SELECT Customer.fname, Customer.lname, Closed_Request.bill FROM Customer, Service_Request, Closed_Request WHERE Customer.id = Service_Request.customer_id AND Service_Request.rid = Closed_Request.rid AND bill < 100 ORDER BY fname;"; 
 			rs = esql.executeQueryAndReturnResult(query); 
 			for (int i = 0; i < rs.size(); ++i) {
 				result += "\nName: " + rs.get(i).get(0) + " " + rs.get(i).get(1) + "\n"; 
@@ -580,11 +580,46 @@ public class MechanicShop{
 	}
 	
 	public static void ListCustomersWithMoreThan20Cars(MechanicShop esql){//7
-		
+		String query = "";
+		String result = "";
+		String total_msg = "";   
+		List<List<String>> rs; 
+		try {
+			query = "SELECT Customer.fname, Customer.lname, COUNT(*) FROM Customer, Owns, Car WHERE Customer.id = Owns.customer_id AND Owns.car_vin = Car.vin GROUP BY Customer.id HAVING COUNT(*) > 20;"; 
+			rs = esql.executeQueryAndReturnResult(query); 
+			for (int i = 0; i < rs.size(); ++i) {
+				result += "\nName: " + rs.get(i).get(0) + " " + rs.get(i).get(1) + "\n"; 
+				result += "Numbers of cars: " + rs.get(i).get(2) + "\n"; 
+			}
+			total_msg = "Total customers owning more than 20 cars: " + rs.size(); 
+			System.out.println(total_msg); 
+			System.out.println(result); 
+		}
+		catch (java.sql.SQLException e) {
+			System.out.println(e.getMessage()); 
+		}
 	}
 	
 	public static void ListCarsBefore1995With50000Milles(MechanicShop esql){//8
-		
+		String query = ""; 
+		String result = ""; 
+		String total_msg = ""; 
+		List<List<String>> rs; 
+		try {
+			query = "SELECT DISTINCT Car.make, Car.model, Car.year FROM Car, Service_Request WHERE Car.vin = Service_Request.car_vin AND Car.year < 1995 AND Service_Request.odometer < 50001 ORDER BY Car.year;"; 
+			rs = esql.executeQueryAndReturnResult(query); 
+			for (int i = 0; i < rs.size(); ++i) {
+				result += "\nMake: " + rs.get(i).get(0) + " "; 
+				result += "Model: " + rs.get(i).get(1) + " "; 
+				result += "Year: " + rs.get(i).get(2) + "\n"; 
+			}
+			total_msg = "Total cars made before 1995 with less than or equal to 50000 miles: " + rs.size(); 
+			System.out.println(total_msg); 
+			System.out.println(result); 
+		}
+		catch (java.sql.SQLException e) {
+			System.out.println(e.getMessage()); 
+		}
 	}
 	
 	public static void ListKCarsWithTheMostServices(MechanicShop esql){//9
@@ -593,8 +628,21 @@ public class MechanicShop{
 	}
 	
 	public static void ListCustomersInDescendingOrderOfTheirTotalBill(MechanicShop esql){//9
-		//
-		
+		String query = ""; 
+		String result = ""; 
+		List<List<String> rs; 
+		try {
+			query = "SELECT Customer.fname, Customer.lname, SUM(Closed_Request.bill) FROM Customer, Service_Request, Closed_Request WHERE Customer.id = Service_Request.customer_id AND Service_Request.rid = Closed_Request.rid GROUP BY Customer.id ORDER BY SUM(bill) DESC;"; 
+			rs = esql.executeQueryAndReturnResult(query); 
+			for (int i = 0; i < rs.size(); ++i) {
+				result += "\nName: " + rs.get(i).get(0) + " " + rs.get(i).get(1) + "\n"; 
+				result += "Total bill: " + rs.get(i).get(2) + "\n"; 
+			} 
+			System.out.println(result); 
+		}
+		catch (java.sql.SQLException e) {
+			System.out.println(e.getMessage()); 
+		}
 	}
 	
 }
