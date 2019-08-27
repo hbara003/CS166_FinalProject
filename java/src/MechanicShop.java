@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
  *
  */
 
+
 public class MechanicShop{
 	//reference to physical database connection
 	private Connection _connection = null;
@@ -75,6 +76,15 @@ public class MechanicShop{
 	    stmt.close ();
 	}//end executeUpdate
 
+	public static boolean isNumeric(String strNum) {
+		try {
+			int d = Integer.parseInt(strNum);
+		}
+		catch (NumberFormatException | NullPointerException nfe) {
+			return false;
+		}
+		return true;
+	}
 	/**
 	 * Method to execute an input query SQL instruction (i.e. SELECT).  This
 	 * method issues the query to the DBMS and outputs the results to
@@ -331,7 +341,13 @@ public class MechanicShop{
             lname = in.readLine();
 
             System.out.println("\tEnter phone number: ");
-            phone = in.readLine();
+            String temp = in.readLine();
+
+            while (temp.length() != 10 || !isNumeric(temp)) {
+                System.out.println("Enter valid phone number");
+                temp = in.readLine();
+            }
+            phone = "(" + temp.substring(0,3) + ")" + temp.substring(3,6) + "-" + temp.substring(6);
 
             System.out.println("\tEnter address: ");
             address = in.readLine();
