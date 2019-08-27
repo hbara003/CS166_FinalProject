@@ -549,6 +549,11 @@ public class MechanicShop{
 		
 		//execute query 
 		esql.executeUpdate(query); 
+		
+		// test update (sanity check)
+        String test_query = "SELECT * FROM Closed_Request WHERE rid = ";
+        test_query += Integer.toString(rid);
+        esql.executeQueryAndPrintResult(test_query);
 	}
 	catch(Exception e) {
 		System.err.println(e.getMessage()); 
@@ -564,7 +569,7 @@ public class MechanicShop{
 			query = "SELECT Customer.fname, Customer.lname, Closed_Request.bill FROM Customer, Service_Request, Closed_Request WHERE Customer.id = Service_Request.customer_id AND Service_Request.rid = Closed_Request.rid AND bill < 100 ORDER BY fname;"; 
 			rs = esql.executeQueryAndReturnResult(query); 
 			for (int i = 0; i < rs.size(); ++i) {
-				result += "\nName: " + rs.get(i).get(0) + " " + rs.get(i).get(1) + "\n"; 
+				result += "\nName: " + rs.get(i).get(0) + rs.get(i).get(1) + "\n"; 
 				result += "Bill: " + rs.get(i).get(2) + "\n"; 	
 			}
 			total_msg = "Total customers with bill less than 100: " + rs.size(); 
@@ -586,8 +591,8 @@ public class MechanicShop{
 			query = "SELECT Customer.fname, Customer.lname, COUNT(*) FROM Customer, Owns, Car WHERE Customer.id = Owns.customer_id AND Owns.car_vin = Car.vin GROUP BY Customer.id HAVING COUNT(*) > 20;"; 
 			rs = esql.executeQueryAndReturnResult(query); 
 			for (int i = 0; i < rs.size(); ++i) {
-				result += "\nName: " + rs.get(i).get(0) + " " + rs.get(i).get(1) + "\n"; 
-				result += "Numbers of cars: " + rs.get(i).get(2) + "\n"; 
+				result += "\nName: " + rs.get(i).get(0) + rs.get(i).get(1) + "\n"; 
+				result += "Number of cars: " + rs.get(i).get(2) + "\n"; 
 			}
 			total_msg = "Total customers owning more than 20 cars: " + rs.size(); 
 			System.out.println(total_msg); 
@@ -660,7 +665,7 @@ public class MechanicShop{
 			query = "SELECT Customer.fname, Customer.lname, SUM(Closed_Request.bill) FROM Customer, Service_Request, Closed_Request WHERE Customer.id = Service_Request.customer_id AND Service_Request.rid = Closed_Request.rid GROUP BY Customer.id ORDER BY SUM(bill) DESC;"; 
 			rs = esql.executeQueryAndReturnResult(query); 
 			for (int i = 0; i < rs.size(); ++i) {
-				result += "\nName: " + rs.get(i).get(0) + " " + rs.get(i).get(1) + "\n"; 
+				result += "\nName: " + rs.get(i).get(0) + rs.get(i).get(1) + "\n"; 
 				result += "Total bill: " + rs.get(i).get(2) + "\n"; 
 			} 
 			System.out.println(result); 
